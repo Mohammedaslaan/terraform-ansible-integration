@@ -1,0 +1,15 @@
+---
+- name: Configure EC2 Instance
+  hosts: example_instances
+  become: true
+  tasks:
+    - name: Update packages
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Install nginx
+      yum:
+        name: nginx
+        state: present
+

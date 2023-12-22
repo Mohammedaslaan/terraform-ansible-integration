@@ -1,0 +1,14 @@
+---
+_all:
+  hosts:
+    example_instance:
+      ansible_host: 3.83.226.189
+      ansible_user: ec2-user
+      ansible_python_interpreter: /usr/bin/python3
+  children:
+    example_instances:
+      hosts:
+        example_instance
+  vars:
+    instance_ip: 3.83.226.189
+

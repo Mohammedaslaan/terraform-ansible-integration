@@ -1,0 +1,15 @@
+---
+_all:
+  hosts:
+    example_instance:
+      ansible_host: 34.205.143.4
+      ansible_user: ec2-user
+      ansible_python_interpreter: /usr/bin/python3
+      ansible_ssh_private_key_file: keyfordemo.pem
+  children:
+    example_instances:
+      hosts:
+        example_instance
+  vars:
+    instance_ip: 34.205.143.4
+
