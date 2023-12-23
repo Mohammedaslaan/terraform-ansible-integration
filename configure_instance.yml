@@ -1,15 +1,33 @@
 ---
-- name: Configure EC2 Instance
-  hosts: example_instances
+- name: Configure httpd server and deploy website
+  hosts: webservers
   become: true
-  tasks:
-    - name: Update packages
-      yum:
-        name: "*"
-        state: latest
+  vars:
+    project_root: /var/www/html
 
-    - name: Install nginx
+  tasks:
+    - name: Install Apache Webserver
+      yum: pkg=httpd state=latest
+
+    - name: Download zip file
+      get_url:
+        url: "https://www.tooplate.com/zip-templates/2136_kool_form_pack.zip"
+        dest: "/tmp/2136_kool_form_pack.zip"
+
+    - name: Install unzip
       yum:
-        name: nginx
+        name: unzip
         state: present
 
+    - name: Unzip the downloaded file
+      command: unzip "/tmp/2136_kool_form_pack.zip" -d "/var/www/html/"
+      args:
+        creates: "/var/www/html/2136_kool_form_pack/"
+
+    - name: Enable Apache on system reboot
+      service: name=httpd enabled=yes
+      notify: restart apache
+
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
